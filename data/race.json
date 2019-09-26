@@ -1,0 +1,107 @@
+{
+    "Dwarf": {
+        "minSize": 4,
+        "maxSize": 5,
+        "minAge": 30,
+        "maxAge": 450,
+        "statIncrease": {
+            "Constitution": 2
+        },
+        "speed": 25,
+        "proficiency": {
+            "weapons": [
+                "Battle Axe",
+                "Hand Axe",
+                "Throwing Hammer",
+                "War Hammer"
+            ],
+            "tools": [
+                "smith's tools",
+                "brewer's supplies",
+                "mason's tools"
+            ]
+        },
+        "languages": [
+            "Common",
+            "Dwarvish"
+        ]
+    },
+    "Elf": {
+        "minSize": 4.5,
+        "maxSize": 6.5,
+        "minAge": 80,
+        "maxAge": 750,
+        "statIncrease": {
+            "Dexterity": 2
+        },
+        "speed": 30,
+        "proficiency": {},
+        "languages": [
+            "Common",
+            "Elvish"
+        ]
+    },
+    "Halfling": {
+        "minSize": 1.5,
+        "maxSize": 4.9,
+        "minAge": 15,
+        "maxAge": 250,
+        "statIncrease": {
+            "Dexterity": 2
+        },
+        "speed": 25,
+        "proficiency": {},
+        "languages": [
+            "Common",
+            "Halfling"
+        ]
+    },
+    "Human": {
+        "minSize": 5,
+        "maxSize": 6.5,
+        "minAge": 16,
+        "maxAge": 70,
+        "statIncrease": {
+            "Strength": 1,
+            "Dexterity": 1,
+            "Constitution": 1,
+            "Intelligence": 1,
+            "Wisdom": 1,
+            "Charisma": 1
+        },
+        "speed": 30,
+        "proficiency": {},
+        "languages": [
+            "Common",
+            "Random"
+        ]
+    },
+    "Dragonborn": {
+        "minSize": 6.2,
+        "maxSize": 7,
+        "minAge": 10,
+        "maxAge": 80,
+        "statIncrease": {
+            "Strength": 2,
+            "Charisma": 1
+        },
+        "speed": 25,
+        "proficiency": {
+            "weapons": [
+                "Battle Axe",
+                "Hand Axe",
+                "Throwing Hammer",
+                "War Hammer"
+            ],
+            "tools": [
+                "smith's tools",
+                "brewer's supplies",
+                "mason's tools"
+            ]
+        },
+        "languages": [
+            "Common",
+            "Dwarvish"
+        ]
+    }
+}

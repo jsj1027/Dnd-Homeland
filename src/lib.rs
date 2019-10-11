@@ -25,12 +25,12 @@ pub fn get_defaulted_status() -> status::Status {
     return status;
 }
 
-pub fn get_race() -> race::Race {
-    let race_file = data_loader::JsonData::new(String::from("data/race.json"));
-    let race_file_data = race_file.get_data();
-    let race = race::Race::new(String::from("Human"), race_file_data);
-    race
-}
+// pub fn get_race() -> race::Race {
+//     let race_file = data_loader::JsonData::new(String::from("data/race.json"));
+//     let race_file_data = race_file.get_data();
+//     let race = race::Race::new(String::from("Human"), race_file_data);
+//     race
+// }
 
 pub fn run() {
     let profile: Profile = Profile::new();
@@ -40,6 +40,6 @@ pub fn run() {
     let yaml_data = yaml_config.get(&serde_yaml::Value::from("profile")).unwrap();
     println!("Config: {:#?}", yaml_data["name"]);
     let race_file: data_loader::JsonData = data_loader::JsonData::new(String::from("data/race.json"));
-    let mut new_race = get_race();
-    println!("size: {:#?}", new_race);
+    // let mut new_race = get_race();
+    // println!("size: {:#?}", new_race);
 }

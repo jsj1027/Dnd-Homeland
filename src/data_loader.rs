@@ -1,3 +1,27 @@
+use pubsub::PubSub;
+use rusqlite::{Connection, Result, NO_PARAMS};
+
+// static pubsub: PubSub = PubSub::new(1);
+#[derive(Debug)]
+struct ClanName {
+    name: String,
+    race: String,
+}
+
+
+pub fn connect(ps: &PubSub) {
+    let dbpath = "./data/dnd.db";
+    let conn = Connection::open(&dbpath).unwrap();
+    println!("Hello");
+
+    let sub1 = ps.subscribe("select", move |query: String| {
+        let mut state = conn.prepare(&query[..]).unwrap();
+        let prep = state.query_map(NO_PARAMS, |row| Ok(ClanName {name: row.get(0).unwrap(), race: row.get(1).unwrap()})).unwrap();
+        for item in prep {
+            println!("Found Clan Name {:#?}",  item.unwrap());
+        }
+    });
+}
 // use serde_yaml::Mapping;
 // use serde_json::{Map, Value};
 // use std::fs::File;

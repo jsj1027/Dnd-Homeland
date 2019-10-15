@@ -11,20 +11,26 @@ struct ClanName {
     race: String,
 }
 
-fn main() -> Result<()> {
+mod data_loader;
+fn main() {
     // run();
-    let pubsub = PubSub::new(1);
-    let dbpath = "./data/dnd.db";
-    let conn = Connection::open(&dbpath)?;
-    println!("{}", conn.is_autocommit());
+    let pubber = PubSub::new(1);
+
+    data_loader::connect(&pubber);
+    pubber.notify("select", "SELECT * FROM 'Clan Names'");
+    
+    
+    // let dbpath = "./data/dnd.db";
+    // let conn = Connection::open(&dbpath)?;
+    // println!("{}", conn.is_autocommit());
     // match conn.execute("SELECT * FROM Race",NO_PARAMS) {
     //     Ok(answer) => answer,
     //     Err(_) => 1,
     // };
-    let mut statment = conn.prepare("SELECT * FROM 'Clan Names'").unwrap();
-    let mut prep = statment.query_map(NO_PARAMS, |row| Ok(ClanName {name: row.get(0)?, race: row.get(1)?}))?;
-    for item in prep {
-        println!("Found Clan Name {:#?}",  item.unwrap());
-    }
-    Ok(())
+    // let mut statment = conn.prepare("SELECT * FROM 'Clan Names'").unwrap();
+    // let prep = statment.query_map(NO_PARAMS, |row| Ok(ClanName {name: row.get(0)?, race: row.get(1)?}))?;
+    // for item in prep {
+    //     println!("Found Clan Name {:#?}",  item.unwrap());
+    // }
+    // Ok(())
 }

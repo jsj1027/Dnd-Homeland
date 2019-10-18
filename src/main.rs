@@ -1,23 +1,15 @@
-// use dnd::run;
 use pubsub::PubSub;
 use rusqlite::types::ToSql;
 use rusqlite::{Connection, Result, NO_PARAMS};
-// use time::Timespec;
-// // TODO clearly map out project mod structture. Map every needed mod to a part of the DND 5e character sheet. No need to be hassling with this over and over again. get it done
 
-#[derive(Debug)]
-struct ClanName {
-    name: String,
-    race: String,
-}
+mod data_connection;
+use data_connection::DatabaseConnection;
 
-mod data_loader;
 fn main() {
-    // run();
-    let pubber = PubSub::new(1);
-
-    data_loader::connect(&pubber);
-    pubber.notify("select", "SELECT * FROM 'Clan Names'");
+    let pubber = PubSub::new(2);
+    let database_connection = DatabaseConnection::new(String::from("./data/dnd.db"));
+    // data_loader::connect(&pubber);
+    // pubber.notify("select", "SELECT * FROM 'Clan Names'");
     
     
     // let dbpath = "./data/dnd.db";

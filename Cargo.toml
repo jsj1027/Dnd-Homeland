@@ -12,7 +12,6 @@ fake = "2.2.0"
 serde_json = "1.0.41"
 spectral = "0.6.0"
 serde_yaml = "0.8.11"
-pubsub = "0.2.3"
 
 [dependencies.rusqlite]
 version = "0.20.0"

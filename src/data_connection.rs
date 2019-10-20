@@ -1,4 +1,3 @@
-use pubsub::PubSub;
 use rusqlite::{Connection, Result, Rows, Statement, NO_PARAMS};
 
 #[derive(Debug)]
@@ -8,25 +7,26 @@ pub struct DatabaseConnection {
 }
 
 impl DatabaseConnection {
-    pub fn new(path: String) -> Self {
+    pub fn new() -> Self {
+        let path = "./data/dnd.db";
         DatabaseConnection {
             connection: connect(&path).unwrap(),
-            path: path,
+            path: String::from(path),
         }
     }
 
-    pub fn return_information(self, query: String) -> Result<Vec<String>> {
-        let mut statement: Statement = self.connection.prepare(&query[..]).unwrap();
+    pub fn return_information(self, query: &str) -> Result<Vec<String>> {
+        let mut statement: Statement = self.connection.prepare(query).unwrap();
         let mut rows = statement.query_map(NO_PARAMS, |row| row.get(0))?;
         let mut results = Vec::new();
-        for row in rows{
+        for row in rows {
             results.push(row?);
         }
         Ok(results)
     }
 }
 
-fn connect(path: &String) -> Result<Connection> {
+fn connect(path: &str) -> Result<Connection> {
     match Connection::open(path) {
         Ok(connection) => Ok(connection),
         Err(error) => {

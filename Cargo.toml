@@ -1,6 +1,6 @@
 [package]
 name = "dnd"
-version = "0.5.1"
+version = "0.6.0"
 authors = ["jsj1027 <jsj1027@g.rit.edu>"]
 edition = "2018"
 
@@ -8,10 +8,10 @@ edition = "2018"
 
 [dependencies]
 rand = "0.7.2"
-fake = "2.2.0"
-serde_json = "1.0.41"
-spectral = "0.6.0"
-serde_yaml = "0.8.11"
+# fake = "2.2.0"
+# serde_json = "1.0.41n"
+# spectral = "0.6.0"
+# serde_yaml = "0.8.11"
 
 [dependencies.rusqlite]
 version = "0.20.0"

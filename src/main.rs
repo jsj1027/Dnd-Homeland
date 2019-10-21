@@ -3,8 +3,9 @@ mod race;
 use race::Race;
 
 fn main() {
-    let rand_race = Race::new();
+    let rand_race = Race::new("Dwarf");
     println!("{:#?}", rand_race.name);
+    println!("{:#?}", rand_race.speed);
 }
 // data_loader::connect(&pubber);
 // pubber.notify("select", "SELECT * FROM 'Clan Names'");

@@ -14,16 +14,6 @@ impl DatabaseConnection {
             path: String::from(path),
         }
     }
-
-    pub fn return_information(self, query: &str) -> Result<Vec<String>> {
-        let mut statement: Statement = self.connection.prepare(query).unwrap();
-        let mut rows = statement.query_map(NO_PARAMS, |row| row.get(0))?;
-        let mut results = Vec::new();
-        for row in rows {
-            results.push(row?);
-        }
-        Ok(results)
-    }
 }
 
 fn connect(path: &str) -> Result<Connection> {

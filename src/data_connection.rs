@@ -1,4 +1,4 @@
-use rusqlite::{Connection, Result, Rows, Statement, NO_PARAMS};
+use rusqlite::{Connection, Result};
 
 #[derive(Debug)]
 pub struct DatabaseConnection {

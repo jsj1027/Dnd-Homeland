@@ -4,9 +4,10 @@ use race::Race;
 
 fn main() {
     let rand_race = Race::new();
-    println!("{:#?}", rand_race.name);
-    println!("{:#?}", rand_race.speed);
-    println!("{:#?}", rand_race.age);
+    println!("Name: {:#?}", rand_race.name);
+    println!("Speed: {:#?}", rand_race.speed);
+    println!("Age: {:#?}", rand_race.age);
+    println!("Languages: {:#?}", rand_race.languages);
 }
 // data_loader::connect(&pubber);
 // pubber.notify("select", "SELECT * FROM 'Clan Names'");

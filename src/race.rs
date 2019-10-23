@@ -15,7 +15,7 @@ pub struct Race {
     pub age: i32,
     // size: (Size, String),
     pub speed: i32,
-    // languages: Vec<String>,
+    pub languages: Vec<String>,
     // proficienes: Vec<Vec<String>>,
 }
 
@@ -23,9 +23,11 @@ impl Race {
     pub fn new() -> Race {
         let data_base = DatabaseConnection::new();
         let name =  get_name(&data_base);
+        let formatted_name = get_formatted_name(&name);
         Race {
-            speed: get_speed(&name, &data_base),
-            age: get_age(&name, &data_base),
+            speed: get_speed(&formatted_name, &data_base),
+            age: get_age(&formatted_name, &data_base),
+            languages: get_language(&formatted_name, &data_base),
             name: name,
         }
         // age: 20,
@@ -39,7 +41,7 @@ impl Race {
 }
 
 fn get_name(data_base: &DatabaseConnection) -> String {
-    let query = String::from("SELECT Name FROM Race");
+    let query = String::from("SELECT name FROM Race");
     let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
     let rows = statement.query_map(NO_PARAMS, |row| row.get(0)).unwrap();
     let mut results: Vec<String> = Vec::new();
@@ -51,22 +53,18 @@ fn get_name(data_base: &DatabaseConnection) -> String {
     String::from(&results[index])
 }
 
-fn get_speed(race_name: &str, data_base: &DatabaseConnection) -> i32 {
-    let mut base = String::from("''");
-    base.insert_str(1, &race_name);
-    let mut query: String = String::from("SELECT Speed FROM Race WHERE Name=");
-    query.push_str(&base);
+fn get_speed(race_name: &String, data_base: &DatabaseConnection) -> i32 {
+    let mut query: String = String::from("SELECT speed FROM Race WHERE name=");
+    query.push_str(&race_name);
     let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
     let mut rows = statement.query(NO_PARAMS).unwrap();
-    let row: i32 = rows.next().unwrap().unwrap().get_unwrap(0);
-    row
+    let speed: i32 = rows.next().unwrap().unwrap().get_unwrap(0);
+    speed
 }
 
-fn get_age(race_name: &str, data_base: &DatabaseConnection) -> i32 {
-    let mut base = String::from("''");
-    base.insert_str(1, &race_name);
-    let mut query: String = String::from("SELECT minAge, maxAge FROM Race WHERE Name=");
-    query.push_str(&base);
+fn get_age(race_name: &String, data_base: &DatabaseConnection) -> i32 {
+    let mut query: String = String::from("SELECT minAge, maxAge FROM Race WHERE name=");
+    query.push_str(&race_name);
     let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
     let mut rows = statement.query(NO_PARAMS).unwrap();
     let row = rows.next().unwrap().unwrap();
@@ -75,6 +73,21 @@ fn get_age(race_name: &str, data_base: &DatabaseConnection) -> i32 {
     let mut rng = thread_rng();
     let age = rng.gen_range(min_age, max_age);
     age
+}
+
+fn get_language(race_name: &str, data_base: &DatabaseConnection) -> Vec<String> {
+    let mut query: String = String::from("SELECT languages FROM Race WHERE name=");
+    query.push_str(&race_name);
+    let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
+    let mut rows = statement.query(NO_PARAMS).unwrap();
+    let languages: String = rows.next().unwrap().unwrap().get_unwrap(0);
+    vec!(String::from("Common"), languages)
+}
+
+fn get_formatted_name(unformatted_name: &str) -> String {
+    let mut base = String::from("''");
+    base.insert_str(1, unformatted_name);
+    base
 }
 // //     fn determine_size(&self, race: String, full_race_data: &serde_json::Map<String, serde_json::Value>) {
 // //         let current_race_data = &full_race_data[&race];

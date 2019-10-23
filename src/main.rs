@@ -4,7 +4,7 @@ use race::Race;
 
 fn main() {
     let rand_race = Race::new();
-    println!("Name: {:#?}", rand_race.name);
+    println!("Race Name: {:#?}", rand_race.name);
     println!("Speed: {:#?}", rand_race.speed);
     println!("Age: {:#?}", rand_race.age);
     println!("Languages: {:#?}", rand_race.languages);

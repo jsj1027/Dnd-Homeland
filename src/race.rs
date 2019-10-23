@@ -22,7 +22,7 @@ pub struct Race {
 impl Race {
     pub fn new() -> Race {
         let data_base = DatabaseConnection::new();
-        let name =  get_name(&data_base);
+        let name = get_name(&data_base);
         let formatted_name = get_formatted_name(&name);
         Race {
             speed: get_speed(&formatted_name, &data_base),
@@ -81,7 +81,7 @@ fn get_language(race_name: &str, data_base: &DatabaseConnection) -> Vec<String> 
     let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
     let mut rows = statement.query(NO_PARAMS).unwrap();
     let languages: String = rows.next().unwrap().unwrap().get_unwrap(0);
-    vec!(String::from("Common"), languages)
+    vec![String::from("Common"), languages]
 }
 
 fn get_formatted_name(unformatted_name: &str) -> String {

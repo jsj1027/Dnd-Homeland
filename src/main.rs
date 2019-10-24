@@ -8,6 +8,8 @@ fn main() {
     println!("Speed: {:#?}", rand_race.speed);
     println!("Age: {:#?}", rand_race.age);
     println!("Languages: {:#?}", rand_race.languages);
+    println!("Proficienes: {:#?}", rand_race.proficienes);
+    println!("Sizes: {:.1?}", rand_race.size);
 }
 // data_loader::connect(&pubber);
 // pubber.notify("select", "SELECT * FROM 'Clan Names'");

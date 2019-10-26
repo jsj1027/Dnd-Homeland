@@ -18,6 +18,7 @@ pub struct Race {
     pub speed: i32,
     pub languages: Vec<String>,
     pub proficienes: Vec<String>,
+    pub stat_bonus: String,
 }
 
 impl Race {
@@ -31,6 +32,7 @@ impl Race {
             languages: get_language(&formatted_name, &data_base),
             proficienes: get_proficienes(&formatted_name, &data_base),
             size: get_size(&formatted_name, &data_base),
+            stat_bonus: get_stat_bonus(&formatted_name, &data_base),
             name: name,
         }
     }
@@ -131,4 +133,13 @@ fn get_size(race_name: &str, data_base: &DatabaseConnection) -> (Size, f64) {
     };
     
     (size_type, size_number)
+}
+
+fn get_stat_bonus(race_name: &str, data_base: &DatabaseConnection) -> String {
+    let mut query: String = String::from("SELECT statBonus FROM Race WHERE name=");
+    query.push_str(&race_name);
+    let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
+    let mut rows = statement.query(NO_PARAMS).unwrap();
+    let stats: String = rows.next().unwrap().unwrap().get_unwrap(0);
+    stats
 }

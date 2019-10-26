@@ -9,5 +9,6 @@ fn main() {
     println!("Age: {:#?}", rand_race.age);
     println!("Languages: {:#?}", rand_race.languages);
     println!("Proficienes: {:#?}", rand_race.proficienes);
-    println!("Sizes: {:.1?}", rand_race.size);
+    println!("Sizes: {:#?}, {:.1?}", rand_race.size.0, rand_race.size.1);
+    println!("Bonus Stat: {:#?}", rand_race.stat_bonus);
 }

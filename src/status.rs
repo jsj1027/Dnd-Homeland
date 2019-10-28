@@ -2,119 +2,122 @@ use rand::prelude::{thread_rng, Rng, ThreadRng};
 
 #[derive(Debug)]
 pub struct Status {
-    strength: [i32; 2],
-    dexterity: [i32; 2],
-    constitution: [i32; 2],
-    intelligence: [i32; 2],
-    wisdom: [i32; 2],
-    charisma: [i32; 2],
+    pub strength: Score,
+    pub dexterity: Score,
+    pub constitution: Score,
+    pub intelligence: Score,
+    pub wisdom: Score,
+    pub charisma: Score,
+}
+
+impl Status {
+    pub fn new(random: bool) -> Status {
+        if random {
+            let random_stats = get_random_stats();
+            Status {
+                strength: Score::new(random_stats.get(0).unwrap()),
+                dexterity: Score::new(random_stats.get(1).unwrap()),
+                constitution: Score::new(random_stats.get(2).unwrap()),
+                intelligence: Score::new(random_stats.get(3).unwrap()),
+                wisdom: Score::new(random_stats.get(4).unwrap()),
+                charisma: Score::new(random_stats.get(5).unwrap()),
+            }
+        } else {
+            let default_stats = get_default_stats();
+            Status {
+                strength: Score::new(default_stats.get(0).unwrap()),
+                dexterity: Score::new(default_stats.get(1).unwrap()),
+                constitution: Score::new(default_stats.get(2).unwrap()),
+                intelligence: Score::new(default_stats.get(3).unwrap()),
+                wisdom: Score::new(default_stats.get(4).unwrap()),
+                charisma: Score::new(default_stats.get(5).unwrap()),
+            }
+        }
+    }
+}
+
+fn get_random_stats() -> Vec<i32> {
+    let mut random_stats: Vec<i32> = Vec::new();
+    let mut index = 0;
+    while index < 6 {
+        let amount_of_dice: i32 = 4;
+        let number_of_sides: i32 = 6;
+        let dice_rolls: Vec<i32> = dice_roll(amount_of_dice, number_of_sides);
+        let mut dice_rolls: Vec<i32> = sort(dice_rolls);
+        dice_rolls.remove(0);
+        let stat_to_add: i32 = dice_rolls.iter().sum();
+        random_stats.push(stat_to_add);
+        index += 1;
+    }
+    random_stats
+}
+
+fn get_default_stats() -> Vec<i32> {
+    let mut stat_order: Vec<i32> = vec![];
+    let mut rng: ThreadRng = thread_rng();
+    let mut default_stat_num = vec![15, 14, 13, 12, 10, 8];
+    while default_stat_num.len() > 0 {
+        let num = rng.gen_range(0, default_stat_num.len());
+        stat_order.push(default_stat_num[num]);
+        default_stat_num.remove(num);
+    }
+    stat_order
+}
+
+fn dice_roll(amount_of_dice: i32, type_of_dice: i32) -> Vec<i32> {
+    let mut rng: ThreadRng = thread_rng();
+    let mut rolls: Vec<i32> = Vec::with_capacity(amount_of_dice as usize);
+
+    for _number in 0..amount_of_dice as isize {
+        rolls.push(rng.gen_range(1, type_of_dice) as i32);
+    }
+    rolls
+}
+
+fn sort(unsorted_vector: Vec<i32>) -> Vec<i32> {
+    let mut sorted_vector = unsorted_vector;
+    let vector_size: usize = sorted_vector.len();
+    for index in 0..vector_size {
+        let value_holder = sorted_vector[index as usize];
+        let mut second_index = index;
+
+        while second_index > 0 && value_holder < sorted_vector[second_index as usize - 1] {
+            sorted_vector[second_index as usize] = sorted_vector[second_index as usize - 1];
+            second_index = second_index - 1;
+        }
+        sorted_vector[second_index as usize] = value_holder;
+    }
+    sorted_vector
 }
 
 #[derive(Debug)]
-struct Score {
-    score: i32,
-    modifer: i32,
+pub struct Score {
+    pub score: i32,
+    pub modifer: i32,
 }
 
-// impl Status {
-//     pub fn new() -> Status {
-//         Status {
-//             strength: stat_formula(0),
-//             dexterity: stat_formula(0),
-//             constitution: stat_formula(0),
-//             intelligence: stat_formula(0),
-//             wisdom: stat_formula(0),
-//             charisma: stat_formula(0),
-//         }
-//     }
+impl Score {
+    pub fn new(number: &i32) -> Score {
+        Score {
+            modifer: modifier_formula(number),
+            score: *number,
+        }
+    }
 
-//     pub fn get_random_stats(&mut self) {
-//         let mut random_stats: Vec<i32> = vec![];
-//         let mut index = 0;
-//         while index < 6 {
-//             // 6 is the amount of stats in the Status struct
-//             let amount_of_dice: i32 = 4;
-//             let number_of_sides: i32 = 6;
-//             let dice_rolls: Vec<i32> = dice_roll(amount_of_dice, number_of_sides);
-//             let mut dice_rolls: Vec<i32> = sort(dice_rolls);
-//             // removes the lowest value from the sorted vector.
-//             dice_rolls.remove(0);
-//             let stat_to_add: i32 = dice_rolls.iter().sum();
-//             random_stats.push(stat_to_add);
-//             index += 1;
-//         }
+    pub fn change_by(&mut self, number: &i32) {
+        self.score = self.score + number;
+        self.modifer = modifier_formula(&self.score);
+    }
 
-//         self.strength = stat_formula(random_stats[0]);
-//         self.dexterity = stat_formula(random_stats[1]);
-//         self.constitution = stat_formula(random_stats[2]);
-//         self.intelligence = stat_formula(random_stats[3]);
-//         self.wisdom = stat_formula(random_stats[4]);
-//         self.charisma = stat_formula(random_stats[5]);
-//     }
+    pub fn set_to(&mut self, number: &i32) {
+        self.score = *number;
+        self.modifer = modifier_formula(&self.score);
+    }
+}
 
-//     pub fn get_default_stats(&mut self) {
-//         let mut stat_order: Vec<i32> = vec![];
-//         let mut rng: ThreadRng = thread_rng();
-//         let mut default_stat_num = vec![15, 14, 13, 12, 10, 8];
-//         while default_stat_num.len() > 0 {
-//             let num = rng.gen_range(0, default_stat_num.len());
-//             stat_order.push(default_stat_num[num]);
-//             default_stat_num.remove(num);
-//         }
-//         self.strength = stat_formula(stat_order[0]);
-//         self.dexterity = stat_formula(stat_order[1]);
-//         self.constitution = stat_formula(stat_order[2]);
-//         self.intelligence = stat_formula(stat_order[3]);
-//         self.wisdom = stat_formula(stat_order[4]);
-//         self.charisma = stat_formula(stat_order[5]);
-//     }
-
-//     pub fn increase_stat_value(&mut self, stat: &str, amount_to_increase_by: i32) {
-//         match stat {
-//             "Strength" => self.strength = stat_formula(self.strength[0] + amount_to_increase_by),
-//             "Dexterity" => self.dexterity = stat_formula(self.dexterity[0] + amount_to_increase_by),
-//             "Constitution" => {
-//                 self.constitution = stat_formula(self.constitution[0] + amount_to_increase_by)
-//             }
-//             "Intelligence" => {
-//                 self.intelligence = stat_formula(self.intelligence[0] + amount_to_increase_by)
-//             }
-//             "Wisdom" => self.wisdom = stat_formula(self.wisdom[0] + amount_to_increase_by),
-//             "Charisma" => self.charisma = stat_formula(self.charisma[0] + amount_to_increase_by),
-//             _ => eprintln!("The given stat is not one you can modify."),
-//         }
-//     }
-// }
-
-// pub fn stat_formula(stat: i32) -> [i32; 2] {
-//     [stat, (stat - 10) / 2]
-// }
-
-// fn dice_roll(amount_of_dice: i32, type_of_dice: i32) -> Vec<i32> {
-//     let mut rng: ThreadRng = thread_rng();
-//     let mut rolls: Vec<i32> = Vec::with_capacity(amount_of_dice as usize);
-
-//     for _number in 0..amount_of_dice as isize {
-//         rolls.push(rng.gen_range(1, type_of_dice) as i32);
-//     }
-//     rolls
-// }
-
-// fn sort(unsorted_vector: Vec<i32>) -> Vec<i32> {
-//     let mut sorted_vector = unsorted_vector;
-//     let vector_size: usize = sorted_vector.len();
-//     for index in 0..vector_size {
-//         let value_holder = sorted_vector[index as usize];
-//         let mut second_index = index;
-
-//         while second_index > 0 && value_holder < sorted_vector[second_index as usize - 1] {
-//             sorted_vector[second_index as usize] = sorted_vector[second_index as usize - 1];
-//             second_index = second_index - 1;
-//         }
-//         sorted_vector[second_index as usize] = value_holder;
-//     }
-//     sorted_vector
-// }
+fn modifier_formula(stat: &i32) -> i32 {
+    ((stat - 10) / 2)
+}
 
 // #[cfg(test)]
 // mod tests {

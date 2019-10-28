@@ -96,7 +96,7 @@ fn get_proficienes(race_name: &str, data_base: &DatabaseConnection) -> Vec<Strin
     let row = rows.next().unwrap().unwrap();
     let weapon_prof: String = row.get_unwrap(0);
     let tool_prof: String = row.get_unwrap(1);
-    vec!(weapon_prof, tool_prof)
+    vec![weapon_prof, tool_prof]
 }
 
 fn get_size(race_name: &str, data_base: &DatabaseConnection) -> (Size, f64) {
@@ -106,33 +106,32 @@ fn get_size(race_name: &str, data_base: &DatabaseConnection) -> (Size, f64) {
     let mut rows = statement.query(NO_PARAMS).unwrap();
     let row = rows.next().unwrap().unwrap();
 
-    let min_size: f64 = row.get_unwrap(0) ;
-    let min_size: f64 = (min_size* 10.0).round()/ 10.0;
+    let min_size: f64 = row.get_unwrap(0);
     let max_size: f64 = row.get_unwrap(1);
-    let max_size: f64 = (max_size* 10.0).round()/ 10.0;
 
     let mut rng = thread_rng();
     let size_number: f64 = rng.gen_range(min_size, max_size);
-    
-    const TINY_START: f64 = 1.0;
-    const TINY_END: f64 = 1.9;
-    const SMALL_START: f64 = 2.0;
-    const SMALL_END: f64 = 3.9;
-    const MEDIUM_START: f64 = 4.0;
-    const MEDIUM_END: f64 = 7.9;
-    const LARGE_START: f64 = 8.0;
-    const LARGE_END: f64 = 15.9;
 
+    let tiny_start: f64 = 1.0;
+    let tiny_end: f64 = 1.9;
+    let small_start: f64 = 2.0;
+    let small_end: f64 = 3.9;
+    let medium_start: f64 = 4.0;
+    let medium_end: f64 = 7.9;
+    let large_start: f64 = 8.0;
+    let large_end: f64 = 15.9;
 
-    let size_type : Size = match size_number.round() {
-        TINY_START ..= TINY_END => Size::Tiny,
-        SMALL_START ..= SMALL_END => Size::Small,
-        MEDIUM_START ..= MEDIUM_END => Size::Medium,
-        LARGE_START ..= LARGE_END => Size::Large,
-        _ => panic!("Size not within allowed range.")
-    };
-    
-    (size_type, size_number)
+    if size_number >= tiny_start && size_number <= tiny_end {
+        (Size::Tiny, size_number)
+    } else if size_number >= small_start && size_number <= small_end {
+        (Size::Small, size_number)
+    } else if size_number >= medium_start && size_number <= medium_end {
+        (Size::Medium, size_number)
+    } else if size_number >= large_start && size_number <= large_end {
+        (Size::Large, size_number)
+    } else {
+        (Size::Large, size_number)
+    }
 }
 
 fn get_stat_bonus(race_name: &str, data_base: &DatabaseConnection) -> String {

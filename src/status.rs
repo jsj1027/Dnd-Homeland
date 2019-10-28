@@ -1,14 +1,20 @@
-// use rand::prelude::{thread_rng, Rng, ThreadRng};
+use rand::prelude::{thread_rng, Rng, ThreadRng};
 
-// #[derive(Debug)]
-// pub struct Status {
-//     strength: [i32; 2],
-//     dexterity: [i32; 2],
-//     constitution: [i32; 2],
-//     intelligence: [i32; 2],
-//     wisdom: [i32; 2],
-//     charisma: [i32; 2],
-// }
+#[derive(Debug)]
+pub struct Status {
+    strength: [i32; 2],
+    dexterity: [i32; 2],
+    constitution: [i32; 2],
+    intelligence: [i32; 2],
+    wisdom: [i32; 2],
+    charisma: [i32; 2],
+}
+
+#[derive(Debug)]
+struct Score {
+    score: i32,
+    modifer: i32,
+}
 
 // impl Status {
 //     pub fn new() -> Status {

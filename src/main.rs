@@ -58,4 +58,6 @@ fn main() {
 
     let rand_class = Class::new();
     println!("Class name: {:#?}", rand_class.name);
+    println!("Class primary stat: {:#?}", rand_class.primary_stat);
+    println!("Class secondary stat: {:#?}", rand_class.secondary_stat);
 }

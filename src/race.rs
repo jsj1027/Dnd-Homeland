@@ -1,6 +1,6 @@
 use crate::data_connection::DatabaseConnection;
 use rand::{thread_rng, Rng};
-use rusqlite::{Statement, NO_PARAMS};
+use rusqlite::{Statement, NO_PARAMS, MappedRows};
 
 #[derive(Debug)]
 pub enum Size {

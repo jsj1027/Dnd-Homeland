@@ -1,7 +1,10 @@
+mod class;
 mod data_connection;
 mod race;
-use race::Race;
 mod status;
+
+use class::Class;
+use race::Race;
 use status::Status;
 
 fn main() {
@@ -52,4 +55,7 @@ fn main() {
         "Set to strength score:{:#?}, modifer:{:#?}",
         new_status.strength.score, new_status.strength.modifer
     );
+
+    let rand_class = Class::new();
+    println!("Class name: {:#?}", rand_class.name);
 }

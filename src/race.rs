@@ -60,7 +60,6 @@ fn get_formatted_name(unformatted_name: &str) -> String {
 fn get_speed(race_name: &String, data_base: &DatabaseConnection) -> i32 {
     let mut query: String = String::from("SELECT speed FROM Race WHERE name=");
     query.push_str(&race_name);
-    println!("{:#?}", query);
     let mut statement: Statement = data_base.connection.prepare(&query[..]).unwrap();
     let mut rows = statement.query(NO_PARAMS).unwrap();
     let speed: i32 = rows.next().unwrap().unwrap().get_unwrap(0);

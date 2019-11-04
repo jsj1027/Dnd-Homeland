@@ -60,4 +60,5 @@ fn main() {
     println!("Class name: {:#?}", rand_class.name);
     println!("Class primary stat: {:#?}", rand_class.primary_stat);
     println!("Class secondary stat: {:#?}", rand_class.secondary_stat);
+    println!("Class cooperative stat: {:#?}", rand_class.cooperative_stat);
 }

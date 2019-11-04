@@ -1,14 +1,14 @@
 use crate::data_connection::DatabaseConnection;
 use rand::{thread_rng, Rng};
-use rusqlite::{Statement, NO_PARAMS};
+use rusqlite::{Row, Statement, NO_PARAMS};
 
 #[derive(Debug)]
 pub struct Class {
     pub name: String,
     pub primary_stat: String,
     pub secondary_stat: String,
-    // alternative: String,
-    // cooperative: String,
+    // pub alternative_stat: String,
+    pub cooperative_stat: String,
 }
 
 impl Class {
@@ -19,6 +19,7 @@ impl Class {
         Class {
             primary_stat: get_primary_stat(&formatted_name, &data_base),
             secondary_stat: get_secondary_stat(&formatted_name, &data_base),
+            cooperative_stat: get_cooperative_stat(&formatted_name, &data_base),
             name: name,
         }
     }
@@ -61,11 +62,11 @@ fn get_secondary_stat(race_name: &String, data_base: &DatabaseConnection) -> Str
     secondary_stat
 }
 
-// fn get_cooperative_stat(race_name: &String, data_base: &DatabaseConnection) -> String {
-//     let mut query: String = String::from("SELECT cooperativeStat FROM Class WHERE name=");
-//     query.push_str(&race_name);
-//     let mut statement = data_base.connection.prepare(&query[..]).unwrap();
-//     let mut rows = statement.query(NO_PARAMS).unwrap();
-//     let cooperative_stat: String = rows.next().unwrap().unwrap().get_unwrap(0);
-//     cooperative_stat
-// }
+fn get_cooperative_stat(race_name: &String, data_base: &DatabaseConnection) -> String{
+    let mut query: String = String::from("SELECT cooperativeStat FROM Class WHERE name=");
+    query.push_str(&race_name);
+    let mut statement = data_base.connection.prepare(&query[..]).unwrap();
+    let mut rows = statement.query(NO_PARAMS).unwrap();
+    let cooperative_stat = rows.next().unwrap().unwrap().get_unwrap(0);
+    cooperative_stat
+}

@@ -21,7 +21,7 @@ pub trait SqlStructure {
         let mut attribute_map = HashMap::new();
         for (key, value) in index_map.iter() {
             let some: String = thing.get_unwrap(*value);
-            attribute_map.insert(key, some);
+            attribute_map.insert(String::from(*key), some);
         }
         println!("{:#?}", attribute_map);
         // possibly fix this using serde crate serialize and deserialize?

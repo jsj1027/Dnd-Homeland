@@ -2,15 +2,15 @@ use crate::data_connection::DatabaseConnection;
 use rusqlite::{Error, Row, NO_PARAMS};
 use std::collections::HashMap;
 pub trait SqlStructure {
-    fn get_struct_name() -> String;
+    fn get_table_name() -> String;
 
     fn map_to_struct<T>(hash_map: HashMap<String, String>) -> T;
 
     fn new<T>(class_name: &str) -> T {
         let data_base = DatabaseConnection::new();
-        let struct_name = <Class as SqlStructure>::get_struct_name();
+        let table_name = <Class as SqlStructure>::get_table_name();
         let sql_query =
-            String::from("SELECT * FROM ") + &struct_name + " WHERE name=" + &class_name;
+            String::from("SELECT * FROM ") + &table_name + " WHERE name=" + &class_name;
         let mut statement = data_base.connection.prepare(&sql_query[..]).unwrap();
         let column_names = statement.column_names();
         let mut index_map = HashMap::new();
@@ -31,9 +31,9 @@ pub trait SqlStructure {
 
     fn random_new() {
         let data_base = DatabaseConnection::new();
-        let struct_name = <Class as SqlStructure>::get_struct_name();
+        let table_name = <Class as SqlStructure>::get_table_name();
         let sql_query =
-            String::from("SELECT * FROM ") + &struct_name + " ORDER BY RANDOM() LIMIT 1";
+            String::from("SELECT * FROM ") + &table_name + " ORDER BY RANDOM() LIMIT 1";
         let mut statement = data_base.connection.prepare(&sql_query[..]).unwrap();
         let mut row = statement.query(NO_PARAMS).unwrap();
         let primary_stat: String = row.next().unwrap().unwrap().get_unwrap(0);
@@ -51,7 +51,7 @@ pub struct Class {
 }
 
 impl SqlStructure for Class {
-    fn get_struct_name() -> String {
+    fn get_table_name() -> String {
         String::from("Class")
     }
 

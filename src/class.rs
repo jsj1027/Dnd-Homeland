@@ -4,7 +4,9 @@ use std::collections::HashMap;
 pub trait SqlStructure {
     fn get_struct_name() -> String;
 
-    fn new(class_name: &str) {
+    fn map_to_struct<T>(hash_map: HashMap<String, String>) -> T;
+
+    fn new<T>(class_name: &str) -> T {
         let data_base = DatabaseConnection::new();
         let struct_name = <Class as SqlStructure>::get_struct_name();
         let sql_query =
@@ -24,20 +26,7 @@ pub trait SqlStructure {
             attribute_map.insert(String::from(*key), some);
         }
         println!("{:#?}", attribute_map);
-        // possibly fix this using serde crate serialize and deserialize?
-        // let end = Class{
-        //     String::from(for (key, value) in inattribute_map{
-        //         String::from(key)+ "," + String::from(value)
-        //     })
-        // };
-        // let primary_stat: String = thing.get_unwrap(0);
-        // let s_stat: String = thing.get_unwrap(1);
-        // let a_stat: String = thing.get_unwrap(2);
-        // let c_stat: String = thing.get_unwrap(3);
-        // println!("primstat {:#?}", primary_stat);
-        // println!("primstat {:#?}", s_stat);
-        // println!("primstat {:#?}", a_stat);
-        // println!("primstat {:#?}", c_stat);
+        <Class as SqlStructure>::map_to_struct(attribute_map)
     }
 
     fn random_new() {
@@ -64,5 +53,16 @@ pub struct Class {
 impl SqlStructure for Class {
     fn get_struct_name() -> String {
         String::from("Class")
+    }
+
+    fn map_to_struct<T>(hash_map: HashMap<String, String>) -> T {
+        T {
+            name: hash_map["name"].clone(),
+            primary_stat: hash_map["name"].clone(),
+            secondary_stat: hash_map["name"].clone(),
+            alternative_stat: hash_map["name"].clone(),
+            cooperative_stat: hash_map["name"].clone(),
+            
+        }
     }
 }

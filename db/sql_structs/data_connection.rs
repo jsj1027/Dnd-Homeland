@@ -48,3 +48,48 @@ fn connect(path: &str) -> Result<Connection> {
         }
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct DbMessage {
+    action: String,
+    verb: String,
+    item: Option<String>,
+}
+
+impl DbMessage {
+    fn new(message: String) -> Self {
+        let mut message_iter = message.split('_').peekable();
+
+        let action: String;
+        let verb: String;
+        let item: Option<String>;
+
+        while message_iter.peek() != None {
+            let part = message_iter.next();
+            let check_part = check_message_part(String::from(part.unwrap()));
+        }
+
+        DbMessage {
+            action: String::from("Hi"),
+            verb: String::from("Hi"),
+            item: Some(String::from("Hi")),
+        }
+    }
+}
+
+pub fn check_message_part(part: String) -> (std::option::Option<std::string::String>, std::option::Option<std::string::String>) {
+    let part = part.to_lowercase();
+    
+    let actions = vec![String::from("create")];
+    let verbs = vec![String::from("bard")];
+    
+    if actions.iter().any(|item| item == &part) {
+        (Some("action".to_string()), Some(part))
+    }
+    else if verbs.iter().any(|item| item == &part) {
+        (Some("verb".to_string()), Some(part))
+    }
+    else {
+        (None, None)
+    }
+} 

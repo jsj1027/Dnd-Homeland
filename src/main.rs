@@ -1,14 +1,17 @@
-mod class;
-mod data_connection;
-mod traits;
-
-use class::Class;
-use rusqlite::{Connection, Error};
-// use class::SqlStructure;
-
+#[macro_use]
+extern crate clap;
+use clap::App;
+use std::thread;
 fn main() {
-    // let rand_class = Class::new("'Barbarian'");
-    // let rand_class = Class::random_new();
-    let db_connection: Result<Connection, Error> =  Connection::open("./data/dnd.db");
+    let yaml = load_yaml!("configuration.yaml");
+    let matches = App::from(yaml).get_matches();
     
+    let character = match matches.value_of("new") {
+        Some(character) => character,
+        _ => return,
+    };
+    match character {
+        "bard" | "Bard"| "BARD" => println!("we gonna create a bard"),
+        _ => println!("Not a creatable class."),
+    }
 }

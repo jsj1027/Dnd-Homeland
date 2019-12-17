@@ -37,7 +37,6 @@
 //         println!("primstat {:#?}", primary_stat);
 //     }
 // }
-use crate::traits::SqlStructure;
 
 #[derive(Debug)]
 pub struct Class {
@@ -48,6 +47,6 @@ pub struct Class {
     pub cooperative_stat: String,
 }
 
-impl SqlStructure for Class {
+// impl SqlStructure for Class {
     
-}
+// }

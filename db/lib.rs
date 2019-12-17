@@ -1,6 +1,7 @@
-mod sql_structs;
+pub mod sql_structs;
 use sql_structs::class;
-
+use sql_structs::data_connection::DatabaseConnection;
+use std::sync::mpsc::{Sender};
 #[cfg(test)]
 mod tests {
     #[test]
@@ -9,3 +10,6 @@ mod tests {
     }
 }
 
+pub fn get_database_connection(message_channel: Sender<String>) -> (DatabaseConnection, Sender<String>) {
+    DatabaseConnection::new(message_channel)
+}

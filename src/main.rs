@@ -30,7 +30,7 @@ fn main() {
     match character {
         "bard" | "Bard" | "BARD" => {
             println!("we gonna create a bard");
-            let result = send_db_message_channel.send("Hello".to_string());
+            let result = send_db_message_channel.send("Bard".to_string());
             match result {
                 Ok(()) => println!("creating bard"),
                 Err(error) => {
@@ -40,15 +40,20 @@ fn main() {
         }
         _ => println!("Not a creatable class."),
     }
+    
 }
 
 fn setup_database_thread(
     sender_channel: Sender<String>,
-) -> (std::thread::JoinHandle<DatabaseConnection>, Sender<String>) {
+) -> (std::thread::JoinHandle<()>, Sender<String>) {
+
     let connection: (DatabaseConnection, Sender<String>) =
         dnd_structs::get_database_connection(sender_channel);
+
     let database = connection.0;
     let database_send_message_channel = connection.1;
-    let database_thread = thread::spawn(move || database);
+
+    let database_thread = thread::spawn(move || database.run());
+
     (database_thread, database_send_message_channel)
 }

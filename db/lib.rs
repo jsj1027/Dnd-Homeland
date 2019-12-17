@@ -2,6 +2,7 @@ pub mod sql_structs;
 use sql_structs::class;
 use sql_structs::data_connection::DatabaseConnection;
 use std::sync::mpsc::{Sender};
+
 #[cfg(test)]
 mod tests {
     #[test]

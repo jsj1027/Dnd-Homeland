@@ -30,7 +30,7 @@ fn main() {
     match character {
         "bard" | "Bard" | "BARD" => {
             println!("we gonna create a bard");
-            let result = send_db_message_channel.send("create_bard".to_string());
+            let result = send_db_message_channel.send("new_bard".to_string());
             match result {
                 Ok(()) => println!("creating bard"),
                 Err(error) => {

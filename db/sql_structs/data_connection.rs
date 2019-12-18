@@ -1,7 +1,7 @@
+use crate::sql_structs::class::{Class, CLASSES};
 use rusqlite::{Connection, Result};
-use std::sync::mpsc;
-use std::sync::mpsc::{Receiver, Sender, TryRecvError};
-
+use std::fmt;
+use std::sync::mpsc::{self, Receiver, Sender, TryRecvError};
 use std::thread;
 use std::time::Duration;
 
@@ -29,12 +29,30 @@ impl DatabaseConnection {
         let check = true;
         while check {
             match self.intake_channel.try_recv() {
-                Ok(message) => println!("this is the message: {}", message),
+                Ok(message) => {
+                    let message = DbMessage::new(message);
+                    self.parse_action(message);
+                }
                 Err(error) => match error {
                     TryRecvError::Empty => thread::sleep(Duration::from_secs(1)),
                     TryRecvError::Disconnected => thread::sleep(Duration::from_secs(1)),
                 },
             }
+        }
+    }
+
+    fn parse_action(&self, message: DbMessage) {
+        match message.action.as_str() {
+            "create" => self.create(message),
+            _ => panic!("Action not implemented"),
+        }
+    }
+
+    fn create(&self, message: DbMessage) {
+        let possible = CLASSES.iter().any(|item| item == &message.verb);
+        match possible {
+            true => print!("create the class"),
+            false => print!("don't create anything"),
         }
     }
 }
@@ -60,36 +78,48 @@ impl DbMessage {
     fn new(message: String) -> Self {
         let mut message_iter = message.split('_').peekable();
 
-        let action: String;
-        let verb: String;
-        let item: Option<String>;
+        let mut action: String = "action".to_string();
+        let mut verb: String = "verb".to_string();
+        let mut item: Option<String> = None;
 
         while message_iter.peek() != None {
-            let part = message_iter.next();
-            let check_part = check_message_part(String::from(part.unwrap()));
+            let part = message_iter.next().unwrap().to_lowercase();
+            let answer = check_message_part(part.as_str());
+            match answer {
+                Some("action") => action = part.to_string(),
+                Some("verb") => verb = part.to_string(),
+                Some("item") => item = Some(part.to_string()),
+                None => item = None,
+                Some(_) => panic!("Unusable option"),
+            }
         }
 
-        DbMessage {
-            action: String::from("Hi"),
-            verb: String::from("Hi"),
-            item: Some(String::from("Hi")),
+        DbMessage { action, verb, item }
+    }
+}
+
+impl fmt::Display for DbMessage {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let item = self.item.clone();
+        match item {
+            Some(_) => write!(f, "{} {} {}", self.action, self.verb, item.unwrap()),
+            None => write!(f, "{} {} ", self.action, self.verb),
         }
     }
 }
 
-pub fn check_message_part(part: String) -> (std::option::Option<std::string::String>, std::option::Option<std::string::String>) {
-    let part = part.to_lowercase();
-    
-    let actions = vec![String::from("create")];
-    let verbs = vec![String::from("bard")];
-    
+pub fn check_message_part(part: &str) -> std::option::Option<&str> {
+    let actions = vec!["create"];
+    let verbs = vec!["bard"];
+    let items = vec!["item"];
+
     if actions.iter().any(|item| item == &part) {
-        (Some("action".to_string()), Some(part))
+        Some("action")
+    } else if verbs.iter().any(|item| item == &part) {
+        Some("verb")
+    } else if items.iter().any(|item| item == &part) {
+        Some("item")
+    } else {
+        None
     }
-    else if verbs.iter().any(|item| item == &part) {
-        (Some("verb".to_string()), Some(part))
-    }
-    else {
-        (None, None)
-    }
-} 
+}

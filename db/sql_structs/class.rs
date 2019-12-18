@@ -47,11 +47,7 @@ pub struct Class {
     pub cooperative_stat: String,
 }
 
-const fn return_classes() -> Vec<&'static str> {
-    vec!["bard", "wizard"]
-}
-
-pub const CLASSES:  Vec<&'static str> = return_classes();
+pub static CLASSES: &'static [&'static str] = &["bard", "wizard"];
 // impl SqlStructure for Class {
 
 // }

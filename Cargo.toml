@@ -9,4 +9,3 @@ edition = "2018"
 [dependencies]
 tui = "0.8.0"
 termion = "1.5.4"
-dnd_structs = { path = "./db/" }

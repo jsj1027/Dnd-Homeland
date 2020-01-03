@@ -5,6 +5,9 @@ use tui::backend::TermionBackend;
 use tui::widgets::{Widget, Block, Borders};
 use tui::layout::{Layout, Constraint, Direction};
 
+//https://github.com/fdehau/tui-rs/blob/master/examples/demo/app.rs
+// Good Example to study
+
 fn main() -> Result<(), io::Error> {
     let stdout = io::stdout().into_raw_mode()?;
     let backend = TermionBackend::new(stdout);

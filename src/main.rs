@@ -40,13 +40,11 @@ fn main() {
         }
         _ => println!("Not a creatable class."),
     }
-    
 }
 
 fn setup_database_thread(
     sender_channel: Sender<String>,
 ) -> (std::thread::JoinHandle<()>, Sender<String>) {
-
     let connection: (DatabaseConnection, Sender<String>) =
         dnd_structs::get_database_connection(sender_channel);
 

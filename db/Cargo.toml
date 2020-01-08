@@ -1,5 +1,5 @@
 [package]
-name = "dnd_structs"
+name = "dnd_db_talker"
 version = "0.7.0"
 authors = ["jsj1027 <jsj1027@g.rit.edu>"]
 edition = "2018"
@@ -17,4 +17,4 @@ edition = "2018"
 version = "0.21.0"
 features = ["bundled"]
 [lib]
-path = "./lib.rs"
+path = "src/lib.rs"

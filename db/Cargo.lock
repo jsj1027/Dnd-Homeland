@@ -11,7 +11,7 @@ version = "1.0.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "dnd_structs"
+name = "dnd_db_talker"
 version = "0.7.0"
 dependencies = [
  "rusqlite 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",

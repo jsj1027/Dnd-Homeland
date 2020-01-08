@@ -1,4 +1,4 @@
-use crate::sql_structs::class::{Class, CLASSES};
+use crate::structs::class::{Class, CLASSES};
 use rusqlite::{Connection, Result};
 use std::result::Result as StdResult;
 use std::str::FromStr;
@@ -127,7 +127,7 @@ impl FromStr for DbMessage {
                 item: None,
             })
         } else {
-            return Err(ParseError)
+            return Err(ParseError);
         }
     }
 }
